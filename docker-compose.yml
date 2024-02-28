@@ -1,0 +1,62 @@
+version: '3.8'
+
+services:
+  nginx:
+    build:
+      context: .
+      dockerfile: ./docker/nginx.dockerfile
+    ports:
+      - 81:81
+    volumes:
+      - .:/var/www/html
+    depends_on:
+      - mysql
+      - php
+      - composer
+  mysql:
+    build:
+      context: .
+      dockerfile: ./docker/mysql.dockerfile
+    ports:
+      - 3307:3306
+    volumes:
+      - ./docker/mysql:/var/lib/mysql
+  php:
+    build:
+      context: .
+      dockerfile: ./docker/php.dockerfile
+    volumes:
+      - .:/var/www/html
+  composer:
+    build:
+      context: .
+      dockerfile: ./docker/composer.dockerfile
+    volumes:
+      - .:/var/www/html
+    working_dir: /var/www/html
+  artisan:
+    build:
+      context: .
+      dockerfile: ./docker/php.dockerfile
+    volumes:
+      - .:/var/www/html
+    working_dir: /var/www/html
+    depends_on:
+      - mysql
+    entrypoint: ["php", "/var/www/html/artisan"]
+  npm:
+    build:
+      context: .
+      dockerfile: ./docker/npm.dockerfile
+    volumes:
+      - .:/var/www/html
+    entrypoint: ["npm"]
+    working_dir: /var/www/html
+  test:
+    build:
+      context: .
+      dockerfile: ./docker/php.test.dockerfile
+    volumes:
+      - .:/var/www/html
+    entrypoint: ["/var/www/html/artisan", "test"]
+    working_dir: /var/www/html
