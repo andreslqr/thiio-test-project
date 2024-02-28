@@ -23,7 +23,7 @@ class AuthTest extends TestCase
             'password' => $password
         ]);
 
-        $response = $this->post('/', [
+        $response = $this->postJson('/auth/login', [
             'email' => $user->email,
             'password' => $password,
         ]);
