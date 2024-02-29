@@ -84,4 +84,14 @@ class AuthTest extends TestCase
                     'expires_in'
                 ]);
     }
+
+    public function test_a_guest_can_not_refresh_access_token(): void
+    {
+        $response = $this->postJson('/auth/refresh');
+
+        $response->assertStatus(401)
+                ->assertJsonStructure([
+                    'message'
+                ]);
+    }
 }
