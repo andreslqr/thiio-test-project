@@ -5,12 +5,14 @@ namespace Tests\Feature;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Tests\Feature\Concerns\InteractsWithJWTAuthentication;
 use Tests\TestCase;
 
 class AuthTest extends TestCase
 {
     use WithFaker;
     use RefreshDatabase;
+    use InteractsWithJWTAuthentication;
 
     /**
      * A basic feature test example.
