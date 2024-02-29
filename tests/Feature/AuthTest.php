@@ -58,7 +58,7 @@ class AuthTest extends TestCase
 
         $response = $this->postJson('/auth/login', [
             'email' => $user->email,
-            'password' => $this->faker()->password(),
+            'password' => $this->faker()->password(minLength: 8),
         ]);
 
         $response->assertStatus(401)
@@ -95,6 +95,27 @@ class AuthTest extends TestCase
                 ]);
     }
 
+
+    public function test_a_user_can_logout(): void
+    {
+        $user = User::factory()->create([
+            'email' => $this->faker()->email(),
+            'password' => $this->faker()->password(minLength: 8)
+        ]);
+
+        $response = $this->actingAs($user)
+                        ->postJson('/auth/logout');
+
+        $response->assertStatus(200)
+                ->assertJsonStructure([
+                    'message'
+                ]);
+
+        $this->postJson('/auth/logout')
+            ->assertStatus(401);
+    }
+
+  
     public function test_a_guest_can_registered(): void
     {
         $name = $this->faker()->name();
