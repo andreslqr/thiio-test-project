@@ -4,6 +4,7 @@ namespace App\Providers;
 
 // use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use Illuminate\Support\Facades\Route;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -21,6 +22,12 @@ class AuthServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        Route::name('auth.')
+            ->middleware([
+                'api',
+                'auth:api'
+            ])
+            ->prefix('auth')
+            ->group(fn() => $this->loadRoutesFrom(base_path('routes/auth.php')));
     }
 }
