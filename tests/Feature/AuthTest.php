@@ -110,10 +110,7 @@ class AuthTest extends TestCase
                     'message'
                 ]);
 
-        $this->actingAs($user)
-            ->postJson('/auth/logout')
+        $this->postJson('/auth/logout')
             ->assertStatus(401);
-
-        
     }
 }
