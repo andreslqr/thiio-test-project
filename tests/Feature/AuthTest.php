@@ -36,4 +36,33 @@ class AuthTest extends TestCase
                 ]);
 
     }
+
+    public function test_a_missing_field_fails_login_validation(): void
+    {
+        $response = $this->postJson('/auth/login', [
+            'password' => $this->faker()->password(),
+        ]);
+
+        $response->assertStatus(422)
+                ->assertInvalid([
+                    'email',
+                ]);
+    }
+
+    public function test_when_password_is_invalid_an_error_is_returned(): void
+    {
+        $user = User::factory()->create([
+            'password' => 'admin123'
+        ]);
+
+        $response = $this->postJson('/auth/login', [
+            'email' => $user->email,
+            'password' => $this->faker()->password(),
+        ]);
+
+        $response->assertStatus(401)
+                ->assertJsonStructure([
+                    'message'
+                ]);
+    }
 }
