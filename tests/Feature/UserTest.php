@@ -165,4 +165,38 @@ class UserTest extends TestCase
 
         $response->assertStatus(404);
     }
+
+    public function test_a_user_can_be_deleted()
+    {
+        $user = User::factory()->create();
+
+        $userForDelete = User::factory()->create();
+        
+        $response = $this->actingAs($user)
+                        ->deleteJson("v1/users/{$userForDelete->getKey()}");
+
+        $response->assertStatus(204);
+    }
+
+    public function test_a_user_can_not_be_deleted_twice()
+    {
+        $user = User::factory()->create();
+
+        $userForDelete = User::factory()->create();
+
+        $response = $this->actingAs($user)
+                        ->deleteJson("v1/users/{$userForDelete->getKey()}");
+
+        $response->assertStatus(404);
+    }
+
+    public function test_a_user_can_not_delete_itself()
+    {
+        $user = User::factory()->create();
+
+        $response = $this->actingAs($user)
+                        ->deleteJson("v1/users/{$user->getKey()}");
+
+        $response->assertStatus(422);
+    }
 }
