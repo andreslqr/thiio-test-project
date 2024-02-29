@@ -138,4 +138,31 @@ class UserTest extends TestCase
         $response->assertStatus(422)
                 ->assertJsonValidationErrorFor('email');
     }
+
+    public function test_can_retrieve_single_user()
+    {
+        $user = User::factory()->create();
+
+        $response = $this->actingAs($user)
+                    ->getJson("/v1/users/{$user->getKey()}");
+
+        $response->assertStatus(200)
+                ->assertJsonStructure([
+                    'data' => [
+                        'id',
+                        'name',
+                        'email'
+                    ]
+                ]);
+    }
+
+    public function test_can_not_retrieve_non_existent_user()
+    {
+        $user = User::factory()->create();
+
+        $response = $this->actingAs($user)
+                    ->getJson("/v1/users/2");
+
+        $response->assertStatus(404);
+    }
 }
