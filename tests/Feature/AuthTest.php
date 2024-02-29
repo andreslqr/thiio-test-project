@@ -58,7 +58,7 @@ class AuthTest extends TestCase
 
         $response = $this->postJson('/auth/login', [
             'email' => $user->email,
-            'password' => $this->faker()->password(),
+            'password' => $this->faker()->password(minLength: 8),
         ]);
 
         $response->assertStatus(401)
