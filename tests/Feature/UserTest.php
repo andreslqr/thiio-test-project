@@ -127,8 +127,8 @@ class UserTest extends TestCase
 
         $response->assertStatus(201);
 
-        $response = $this->$this->actingAs($user)
-            ->postJson('/users', [
+        $response = $this->actingAs($user)
+            ->postJson('/v1/users', [
                 'name' => $name,
                 'email' => $email,
                 'password' => $password,
