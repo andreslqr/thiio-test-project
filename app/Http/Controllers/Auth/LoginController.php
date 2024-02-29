@@ -26,6 +26,13 @@ class LoginController extends Controller
 
         $token = $guard->attempt($credentials);
 
-        return $this->respondWithToken($token, $guard);
+        if($token) {
+            return $this->respondWithToken($token, $guard);
+        }
+
+        return response()->json([
+            'message' => 'Unauthorized'
+        ], 401);
+
     }
 }
