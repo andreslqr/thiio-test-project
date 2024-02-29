@@ -99,7 +99,7 @@ class AuthTest extends TestCase
     {
         $name = $this->faker()->name();
         $email = $this->faker()->email();
-        $password = $this->faker()->password();
+        $password = $this->faker()->password(minLength: 8) . '5#A';
 
         $response = $this->postJson('/auth/register', [
             'name' => $name,
@@ -110,8 +110,18 @@ class AuthTest extends TestCase
 
         $response->assertStatus(201)
                 ->assertJsonStructure([
-                    'message'
+                    'data' => [
+                        'name',
+                        'email',
+                        'id'
+                    ]
+                ])
+                ->assertJsonMissing([
+                    'data' => [
+                        'password'
+                    ]
                 ]);
+
 
         $this->assertDatabaseHas('users', [
             'name' => $name,
