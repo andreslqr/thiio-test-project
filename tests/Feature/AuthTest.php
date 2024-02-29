@@ -149,4 +149,30 @@ class AuthTest extends TestCase
             'email' => $email
         ]);
     }
+
+    public function test_a_guest_can_not_registered_twice()
+    {
+        $name = $this->faker()->name();
+        $email = $this->faker()->email();
+        $password = $this->faker()->password(minLength: 8) . '5#A';
+
+        $response = $this->postJson('/auth/register', [
+            'name' => $name,
+            'email' => $email,
+            'password' => $password,
+            'password_confirmation' => $password
+        ]);
+
+        $response->assertStatus(201);
+
+        $response = $this->postJson('/auth/register', [
+            'name' => $name,
+            'email' => $email,
+            'password' => $password,
+            'password_confirmation' => $password
+        ]);
+
+        $response->assertStatus(422)
+                ->assertJsonValidationErrorFor('email');
+    }
 }
