@@ -6,7 +6,6 @@ jobs:
     name: Laravel (PHP ${{ matrix.php-versions }})
     runs-on: ubuntu-latest
     env:
-    
       JWT_SECRET: o7zZ9iAoYdYWGBLelqhxEMSZxDggeTsQA4ajUhKoDtcDz4jJMaEGlc1oi2pavhIj
       DB_DATABASE: laravel
       DB_USERNAME: root
@@ -78,3 +77,5 @@ jobs:
 
       - name: Test with phpunit
         run: vendor/bin/phpunit --coverage-text
+        env:
+          DB_PORT: 3306
