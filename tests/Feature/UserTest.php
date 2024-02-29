@@ -24,7 +24,7 @@ class UserTest extends TestCase
         $users = User::factory()->count(30)->create();
 
         $response = $this->actingAs($user)
-                        ->get('/users');
+                        ->get('/v1/users');
         
         $response->assertStatus(200)
                 ->assertJsonStructure([
