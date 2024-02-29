@@ -71,4 +71,71 @@ class UserTest extends TestCase
             ->getJson('/v1/users?per_page=30')
             ->assertJsonCount(30, 'data');
     }
+
+    public function test_can_create_a_user(): void
+    {
+        $user = User::factory()->create();
+        
+        $name = $this->faker()->name();
+        $email = $this->faker()->email();
+        $password = $this->faker()->password(minLength: 8) . '5#A';
+
+        $response = $this->actingAs($user)
+            ->postJson('/v1/users', [
+                'name' => $name,
+                'email' => $email,
+                'password' => $password,
+                'password_confirmation' => $password
+            ]);
+
+        $response->assertStatus(201)
+                ->assertJsonStructure([
+                    'data' => [
+                        'name',
+                        'email',
+                        'id'
+                    ]
+                ])
+                ->assertJsonMissing([
+                    'data' => [
+                        'password'
+                    ]
+                ]);
+
+
+        $this->assertDatabaseHas('users', [
+            'name' => $name,
+            'email' => $email
+        ]);
+    }
+
+    public function test_a_user_can_not_be_created_twice()
+    {
+        $user = User::factory()->create();
+
+        $name = $this->faker()->name();
+        $email = $this->faker()->email();
+        $password = $this->faker()->password(minLength: 8) . '5#A';
+
+        $response = $this->actingAs($user)
+            ->postJson('/v1/users', [
+                'name' => $name,
+                'email' => $email,
+                'password' => $password,
+                'password_confirmation' => $password
+            ]);
+
+        $response->assertStatus(201);
+
+        $response = $this->actingAs($user)
+            ->postJson('/v1/users', [
+                'name' => $name,
+                'email' => $email,
+                'password' => $password,
+                'password_confirmation' => $password
+            ]);
+
+        $response->assertStatus(422)
+                ->assertJsonValidationErrorFor('email');
+    }
 }

@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\V1\User;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\V1\User\CreateUserRequest;
 use App\Http\Requests\V1\User\GetUsersRequest;
 use App\Http\Resources\UserCollection;
+use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
@@ -31,9 +33,15 @@ class UsersController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(CreateUserRequest $request)
     {
-        //
+        $data = $request->validated();
+
+        $user = User::create($data);
+
+        return UserResource::make($user)
+                        ->response()
+                        ->setStatusCode(201);
     }
 
     /**
