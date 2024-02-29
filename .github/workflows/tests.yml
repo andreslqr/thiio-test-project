@@ -76,8 +76,5 @@ jobs:
       - name: Clear Config
         run: php artisan config:clear
 
-      - name: Run Migration
-        run: php artisan migrate -v
-
       - name: Test with phpunit
         run: vendor/bin/phpunit --coverage-text
