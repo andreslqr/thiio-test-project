@@ -94,4 +94,26 @@ class AuthTest extends TestCase
                     'message'
                 ]);
     }
+
+    public function test_a_user_can_logout(): void
+    {
+        $user = User::factory()->create([
+            'email' => $this->faker()->email(),
+            'password' => $this->faker()->password(minLength: 8)
+        ]);
+
+        $response = $this->actingAs($user)
+                        ->postJson('/auth/logout');
+
+        $response->assertStatus(200)
+                ->assertJsonStructure([
+                    'message'
+                ]);
+
+        $this->actingAs($user)
+            ->postJson('/auth/logout')
+            ->assertStatus(401);
+
+        
+    }
 }
