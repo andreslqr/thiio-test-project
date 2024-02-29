@@ -34,7 +34,6 @@ class AuthTest extends TestCase
                     'token_type',
                     'expires_in'
                 ]);
-
     }
 
     public function test_a_missing_field_fails_login_validation(): void
@@ -63,6 +62,24 @@ class AuthTest extends TestCase
         $response->assertStatus(401)
                 ->assertJsonStructure([
                     'message'
+                ]);
+    }
+
+    public function test_a_logged_user_can_refresh_access_token(): void
+    {
+        $user = User::factory()->create([
+            'email' => $this->faker()->email(),
+            'password' => $this->faker()->password(minLength: 8)
+        ]);
+
+        $response = $this->actingAs($user)
+                        ->postJson('/auth/refresh');
+
+        $response->assertStatus(200)
+                ->assertJsonStructure([
+                    'access_token',
+                    'token_type',
+                    'expires_in'
                 ]);
     }
 }
