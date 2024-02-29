@@ -78,7 +78,7 @@ class UserTest extends TestCase
         
         $name = $this->faker()->name();
         $email = $this->faker()->email();
-        $password = $this->faker()->password(minLength: 8) . '5#A';
+        $password = $this->faker()->password(minLength: 8) . '5a#A';
 
         $response = $this->actingAs($user)
             ->postJson('/v1/users', [
@@ -115,7 +115,7 @@ class UserTest extends TestCase
 
         $name = $this->faker()->name();
         $email = $this->faker()->email();
-        $password = $this->faker()->password(minLength: 8) . '5#A';
+        $password = $this->faker()->password(minLength: 8) . '5a#A';
 
         $response = $this->actingAs($user)
             ->postJson('/v1/users', [
