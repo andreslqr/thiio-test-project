@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Auth;
 
+use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rules\Password;
 
@@ -31,6 +32,7 @@ class RegisterAttemptRequest extends FormRequest
             'email' => [
                 'required',
                 'string',
+                'unique:' . app(User::class)->getTable() . ',email',
                 'email',
                 'max:255'
             ],
