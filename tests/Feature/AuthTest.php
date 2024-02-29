@@ -94,4 +94,38 @@ class AuthTest extends TestCase
                     'message'
                 ]);
     }
+
+    public function test_a_guest_can_registered(): void
+    {
+        $name = $this->faker()->name();
+        $email = $this->faker()->email();
+        $password = $this->faker()->password(minLength: 8) . '5#A';
+
+        $response = $this->postJson('/auth/register', [
+            'name' => $name,
+            'email' => $email,
+            'password' => $password,
+            'password_confirmation' => $password
+        ]);
+
+        $response->assertStatus(201)
+                ->assertJsonStructure([
+                    'data' => [
+                        'name',
+                        'email',
+                        'id'
+                    ]
+                ])
+                ->assertJsonMissing([
+                    'data' => [
+                        'password'
+                    ]
+                ]);
+
+
+        $this->assertDatabaseHas('users', [
+            'name' => $name,
+            'email' => $email
+        ]);
+    }
 }
