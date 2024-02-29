@@ -17,21 +17,22 @@ class UserTest extends TestCase
     /**
      * A basic feature test example.
      */
-    public function test_can_get_a_list_of_users(): void
+    public function test_can_retrieve_users(): void
     {
         $user = User::factory()->create();
 
-        $users = User::factory()->count(30)->create();
+        User::factory()->count(30)->create();
 
         $response = $this->actingAs($user)
-                        ->get('/v1/users');
-        
+                        ->getJson('/v1/users');
+
         $response->assertStatus(200)
                 ->assertJsonStructure([
                     'data' => [
-                        'id',
-                        'name',
-                        'email'
+                        '*' => [
+                            'name',
+                            'email'
+                        ]
                     ],
                     'links' => [
                         'first',
@@ -48,6 +49,26 @@ class UserTest extends TestCase
                         'to',
                         'total'
                     ]
-                ]);
+                ])
+                ->assertJsonCount(15, 'data');
+    }
+
+    public function test_can_retrieve_users_by_filtering()
+    {
+        $user = User::factory()->create();
+
+        User::factory()->count(30)->create();
+        User::factory()->count(2)->create([
+            'name' => 'wwwwwwwwww'
+        ]);
+
+        $this->actingAs($user)
+            ->getJson('/v1/users?search=wwwwwwwwww')
+            ->assertStatus(200)
+            ->assertJsonCount(2, 'data');
+
+        $this->actingAs($user)
+            ->getJson('/v1/users?per_page=30')
+            ->assertJsonCount(30, 'data');
     }
 }
