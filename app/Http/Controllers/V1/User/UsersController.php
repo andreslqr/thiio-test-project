@@ -5,6 +5,7 @@ namespace App\Http\Controllers\V1\User;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\V1\User\CreateUserRequest;
 use App\Http\Requests\V1\User\GetUsersRequest;
+use App\Http\Requests\V1\User\UpdateUserRequest;
 use App\Http\Resources\UserCollection;
 use App\Http\Resources\UserResource;
 use App\Models\User;
@@ -63,9 +64,13 @@ class UsersController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateUserRequest $request, User $user)
     {
-        //
+        $user->fill($request->safe()->except('password'))
+            ->forceFill($request->safe()->only('password'))
+            ->save();
+
+        return UserResource::make($user);
     }
 
     /**
