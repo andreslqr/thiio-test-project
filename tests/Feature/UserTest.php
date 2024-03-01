@@ -173,7 +173,7 @@ class UserTest extends TestCase
         $userForDelete = User::factory()->create();
         
         $response = $this->actingAs($user)
-                        ->deleteJson("v1/users/{$userForDelete->getKey()}");
+                        ->deleteJson("/v1/users/{$userForDelete->getKey()}");
 
         $response->assertStatus(204);
 
@@ -187,10 +187,10 @@ class UserTest extends TestCase
         $userForDelete = User::factory()->create();
 
         $response = $this->actingAs($user)
-                        ->deleteJson("v1/users/{$userForDelete->getKey()}");
+                        ->deleteJson("/v1/users/{$userForDelete->getKey()}");
 
         $response = $this->actingAs($user)
-                        ->deleteJson("v1/users/{$userForDelete->getKey()}");
+                        ->deleteJson("/v1/users/{$userForDelete->getKey()}");
 
         $response->assertStatus(404);
     }
@@ -200,8 +200,38 @@ class UserTest extends TestCase
         $user = User::factory()->create();
 
         $response = $this->actingAs($user)
-                        ->deleteJson("v1/users/{$user->getKey()}");
+                        ->deleteJson("/v1/users/{$user->getKey()}");
 
         $response->assertStatus(403);
+    }
+
+    public function test_can_update_user()
+    {
+        $user = User::factory()->create();
+
+        $userForUpdate = User::factory()->create();
+
+        $name = $this->faker()->name();
+
+        $response = $this->actingAs($user)
+                        ->putJson("/v1/users/{$userForUpdate->getKey()}", [
+                            'name' => $name,
+                            'email' => $this->faker()->email()
+                        ]);
+                
+
+        $response->assertStatus(200)
+                        ->assertJsonStructure([
+                            'data' => [
+                                'name',
+                                'email'
+                            ]
+                        ])
+                        ->assertJsonPath('data.name', $name);
+
+        $this->assertDatabaseHas($user, [
+            'id' => $userForUpdate->getKey(),
+            'name' => $name
+        ]);
     }
 }
