@@ -202,6 +202,6 @@ class UserTest extends TestCase
         $response = $this->actingAs($user)
                         ->deleteJson("v1/users/{$user->getKey()}");
 
-        $response->assertStatus(422);
+        $response->assertStatus(403);
     }
 }

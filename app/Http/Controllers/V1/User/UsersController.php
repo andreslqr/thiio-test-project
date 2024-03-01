@@ -13,6 +13,14 @@ use Illuminate\Http\Request;
 
 class UsersController extends Controller
 {
+     /**
+     * Create the controller instance.
+     */
+    public function __construct()
+    {
+        $this->authorizeResource(User::class, 'user');
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -63,8 +71,10 @@ class UsersController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(User $user)
     {
-        //
+        $user->delete();
+
+        return response()->json(status: 204);
     }
 }
