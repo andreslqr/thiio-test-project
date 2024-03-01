@@ -214,7 +214,7 @@ class UserTest extends TestCase
         $name = $this->faker()->name();
 
         $response = $this->actingAs($user)
-                        ->postJson("/v1/users/{$userForUpdate->getKey()}", [
+                        ->putJson("/v1/users/{$userForUpdate->getKey()}", [
                             'name' => $name,
                             'email' => $this->faker()->email()
                         ]);
