@@ -1,11 +1,11 @@
 import { createRouter, createWebHistory } from 'vue-router'
 
-import Layout from './layouts/app.vue'
+const Layout = () => import('./layouts/app.vue')
 
-import AuthLogin from './pages/auth/login.vue'
-import AuthRegister from './pages/auth/register.vue'
+const AuthLogin = () => import('./pages/auth/login.vue')
+const AuthRegister = () => import('./pages/auth/register.vue')
 
-import UsersIndex from './pages/users/index.vue'
+const UsersIndex = () => import('./pages/users/index.vue')
 
 
 const routes = [
@@ -14,6 +14,7 @@ const routes = [
         component: Layout,
         name: 'Layout',
         children: [
+            { path: '/',            name: 'Home',       redirect: '/users' },
             { path: '/register',    name: 'Register',   component: AuthRegister },
             { path: '/login',       name: 'Login',      component: AuthLogin },
             { path: '/users',       name: 'Users',      component: UsersIndex, }
