@@ -120,7 +120,7 @@ class AuthTest extends TestCase
     {
         $name = $this->faker()->name();
         $email = $this->faker()->email();
-        $password = $this->faker()->password(minLength: 8) . '5#A';
+        $password = $this->faker()->password(minLength: 8) . '5a#A';
 
         $response = $this->postJson('/auth/register', [
             'name' => $name,
@@ -154,7 +154,7 @@ class AuthTest extends TestCase
     {
         $name = $this->faker()->name();
         $email = $this->faker()->email();
-        $password = $this->faker()->password(minLength: 8) . '5#A';
+        $password = $this->faker()->password(minLength: 8) . '5a#A';
 
         $response = $this->postJson('/auth/register', [
             'name' => $name,
