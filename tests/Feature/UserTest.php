@@ -176,6 +176,8 @@ class UserTest extends TestCase
                         ->deleteJson("v1/users/{$userForDelete->getKey()}");
 
         $response->assertStatus(204);
+
+        $this->assertDatabaseMissing($userForDelete, $userForDelete->toArray());
     }
 
     public function test_a_user_can_not_be_deleted_twice()
@@ -183,6 +185,9 @@ class UserTest extends TestCase
         $user = User::factory()->create();
 
         $userForDelete = User::factory()->create();
+
+        $response = $this->actingAs($user)
+                        ->deleteJson("v1/users/{$userForDelete->getKey()}");
 
         $response = $this->actingAs($user)
                         ->deleteJson("v1/users/{$userForDelete->getKey()}");
