@@ -53,6 +53,7 @@ jobs:
       - name: Execute tests
         run: vendor/bin/phpunit --coverage-text
         env:
+          APP_KEY: base64:HLH0cxF5763xriH/ZVzoI8EcPWH/gmcPif+IsWH1mXY=
           DB_CONNECTION: mysql
           DB_USERNAME: root       
           JWT_SECRET: o7zZ9iAoYdYWGBLelqhxEMSZxDggeTsQA4ajUhKoDtcDz4jJMaEGlc1oi2pavhIj
