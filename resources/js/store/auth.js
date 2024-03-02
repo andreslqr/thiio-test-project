@@ -5,6 +5,7 @@ export const authStore = defineStore('auth', () => {
     const user = ref(null)
 
     const email = ref(null)
+    const name = ref(null)
     const password = ref(null)
     const passwordConfirmation = ref(null)
 
@@ -12,5 +13,5 @@ export const authStore = defineStore('auth', () => {
 
     }
 
-    return { user, email, password, passwordConfirmation, login }
+    return { user, name, email, password, passwordConfirmation, login }
 })
