@@ -1,9 +1,11 @@
-import "vuetify/styles";
-import { createVuetify } from "vuetify";
-import * as components from "vuetify/components";
-import * as directives from "vuetify/directives";
+import "vuetify/styles"
+import '@mdi/font/css/materialdesignicons.css' 
 
-const customeTheme = {
+import { createVuetify } from "vuetify"
+import * as components from "vuetify/components"
+import * as directives from "vuetify/directives"
+
+const lightTheme = {
     dark: false,
     colors: {
         primary: "#00ACDA",
@@ -29,17 +31,28 @@ const customeTheme = {
         white: "#FFFFFF",
         muted: "#6c757d",
     },
-};
+}
+
+const darkTheme = {
+    ...lightTheme,
+    dark: true
+}
+
+const themes = {
+    lightTheme,
+    darkTheme
+}
 
 const vuetify = createVuetify({
     components,
     directives,
-    theme: {
-        defaultTheme: "customeTheme",
-        themes: {
-            customeTheme,
-        },
+    icons: {
+        defaultSet: 'mdi'
     },
-});
+    theme: {
+        defaultTheme: "lightTheme",
+        themes
+    },
+})
 
-export default vuetify;
+export default vuetify
