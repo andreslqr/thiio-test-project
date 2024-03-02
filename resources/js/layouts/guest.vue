@@ -1,16 +1,18 @@
 <template>
-    <div class="w-100 d-flex px-4 py-4">
-        <v-spacer></v-spacer>
-        <v-btn icon @click.stop="toggleTheme">
-            <v-icon v-if="! dark" icon="mdi-white-balance-sunny"></v-icon>
-            <v-icon v-if="dark" icon="mdi-weather-night"></v-icon>
-        </v-btn>
+    <div class="h-screen bg-secondary">
+        <div class="w-100 d-flex px-4 py-4">
+            <v-spacer></v-spacer>
+            <v-btn icon @click.stop="toggleTheme">
+                <v-icon v-if="! dark" icon="mdi-white-balance-sunny"></v-icon>
+                <v-icon v-if="dark" icon="mdi-weather-night"></v-icon>
+            </v-btn>
+        </div>
+        <v-layout>
+            <v-container>
+                <router-view></router-view>
+            </v-container>
+        </v-layout>
     </div>
-    <v-layout>
-        <v-container>
-            <router-view></router-view>
-        </v-container>
-    </v-layout>
 </template>
 
 <script setup>
